@@ -1,4 +1,93 @@
-    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-            <a class="btn btn-primary btn-lg " ng-href="#select">Back</a>							
-    </div> 
-<span ng-repeat="employee in selecteds">{{employee.name}}</span>
+<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+        <a class="btn btn-primary btn-lg " ng-href="#select">Back</a>							
+</div> 
+<div class="dropdown-divider"></div>
+<div class="row">
+<div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">        
+        <div id="accordion" role="tablist">
+          <div class="card" ng-repeat="employee in selecteds">
+            <div class="card-header">
+              <h5 class="mb-0">
+                  <a ng-click="employee.show = !employee.show" style="cursor: pointer;">
+                  {{employee.name }}
+                </a>
+                  <button type="button" class="btn-danger btn float-right" ng-click="remove(employee)">Remove</button>
+              </h5>
+            </div>
+              <div id="collapseOne" class="collapse" ng-class="{show: employee.show}">
+              <div class="card-body">
+                <div class="row">
+                    <div class="col-5">
+                        <img ng-src="{{employee.image}}" class="rounded float-left img-fluid" style="width: 200px;"/>
+                    </div>
+                    <div class="col-7">
+                        <div class="col-12">
+                         <h4 class="card-title">Name</h4>
+                         <h6 class="card-subtitle mb-2 text-muted">{{employee.name}}</h6>                     
+                        </div>
+                        <div class="col-12">
+                         <h4 class="card-title">DOB</h4>
+                         <h6 class="card-subtitle mb-2 text-muted">{{employee.dob}}</h6>                     
+                        </div>
+                        <div class="col-12">
+                         <h4 class="card-title">Phone:</h4>
+                         <h6 class="card-subtitle mb-2 text-muted">{{employee.phone}}</h6>                     
+                        </div>
+
+                    </div>
+                </div>        
+              </div>
+            </div>
+          </div>  
+        </div>        
+    </div>
+</div>
+
+<table class="table table-responsive" id="table-form">
+    <thead>
+      <tr>
+        <th>Day</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Duration</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr ng-if="weekday.Number !== 0" ng-repeat="weekday in WeekDays">
+        <th>{{weekday.Description}}</th>
+        <td>
+            <select class="hour-start form-control custom-select " id="start-1">
+                <option value="{{hour}}" ng-repeat="hour in weekday.OptionHoursStart" >{{hour}}</option>
+            </select>
+        </td>
+        <td>
+            <select class="hour-end form-control custom-select " id="start-1-end" ng-disabled="true">
+                <option value="0" ng-repeat="hour in weekday.OptionHoursStart">{{hour}}</option>
+            </select>
+        </td>
+        <td class="duration">         
+        </td>
+    </tr>
+    <tr>
+        <th>{{WeekDays[0].Description}}</th>
+        <td>
+            <select class="hour-start form-control custom-select " id="start-1">
+                <option value="0" ng-repeat="hour in WeekDays[0].OptionHoursStart">{{hour}}</option>
+            </select>
+        </td>
+        <td>
+            <select class="hour-end form-control custom-select " id="start-1-end" ng-disabled="true">
+                <option value="0" ng-repeat="hour in WeekDays[0].OptionHoursStart">{{hour}}</option>
+            </select>
+        </td>
+        <td class="duration">         
+        </td>
+    </tr>    
+    </tbody>
+    <tfoot>
+        <tr>
+            <th colspan="3">Total worked hours of the week</th>
+            <td class="ts-total"></td>
+        </tr>
+    </tfoot>
+</table>
