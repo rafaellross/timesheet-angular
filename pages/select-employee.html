@@ -1,0 +1,106 @@
+<div class="row">
+    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+            <a class="btn btn-primary btn-lg " href="#/">Back</a>							
+    </div> 
+    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+    <form action="#">
+      <div class="form-row">
+        <div class="col-auto">
+            <input type="text" class="form-control form-control-lg" placeholder="Search..." ng-model="search">      
+        </div>
+         <div class="col-auto">
+             <button type="button" class="btn btn-primary btn-lg" ng-click="showEmployees(search)">Search</button>
+        </div> 
+         <div class="col-auto">
+             <button type="button" class="btn btn-dark btn-lg" ng-click="showEmployees()">Show All</button>
+        </div> 
+        <div class="col-auto">
+            <a class="btn btn-primary btn-lg" ng-href="#new" ng-class="{disabled: selecteds.length === 0}">Next</a>
+        </div>          
+      </div>
+    </form>    
+    </div>		   
+</div>
+<div class="dropdown-divider"></div>
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">        
+        <div id="accordion" role="tablist">
+          <div class="card" ng-repeat="employee in employees">
+            <div class="card-header">
+              <h5 class="mb-0">
+                  <a ng-click="employee.show = !employee.show" style="cursor: pointer;">
+                  {{employee.name}}
+                </a>
+                  <button type="button" class="btn-primary btn float-right" ng-click="select(employee)">Add</button>
+              </h5>
+            </div>
+              <div id="collapseOne" class="collapse" ng-class="{show: employee.show}">
+              <div class="card-body">
+                <div class="row">
+                    <div class="col-5">
+                        <img ng-src="{{employee.image}}" class="rounded float-left img-fluid" style="width: 200px;"/>
+                    </div>
+                    <div class="col-7">
+                        <div class="col-12">
+                         <h4 class="card-title">Name</h4>
+                         <h6 class="card-subtitle mb-2 text-muted">{{employee.name}}</h6>                     
+                        </div>
+                        <div class="col-12">
+                         <h4 class="card-title">DOB</h4>
+                         <h6 class="card-subtitle mb-2 text-muted">{{employee.dob}}</h6>                     
+                        </div>
+                        <div class="col-12">
+                         <h4 class="card-title">Phone:</h4>
+                         <h6 class="card-subtitle mb-2 text-muted">{{employee.phone}}</h6>                     
+                        </div>
+
+                    </div>
+                </div>        
+              </div>
+            </div>
+          </div>  
+        </div>        
+    </div>
+</div>
+
+<div class="dropdown-divider"></div>
+<div class="row">
+<div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">        
+        <div id="accordion" role="tablist">
+          <div class="card" ng-repeat="employee in selecteds">
+            <div class="card-header">
+              <h5 class="mb-0">
+                  <a ng-click="employee.show = !employee.show" style="cursor: pointer;">
+                  {{employee.name }}
+                </a>
+                  <button type="button" class="btn-danger btn float-right" ng-click="remove(employee)">Remove</button>
+              </h5>
+            </div>
+              <div id="collapseOne" class="collapse" ng-class="{show: employee.show}">
+              <div class="card-body">
+                <div class="row">
+                    <div class="col-5">
+                        <img ng-src="{{employee.image}}" class="rounded float-left img-fluid" style="width: 200px;"/>
+                    </div>
+                    <div class="col-7">
+                        <div class="col-12">
+                         <h4 class="card-title">Name</h4>
+                         <h6 class="card-subtitle mb-2 text-muted">{{employee.name}}</h6>                     
+                        </div>
+                        <div class="col-12">
+                         <h4 class="card-title">DOB</h4>
+                         <h6 class="card-subtitle mb-2 text-muted">{{employee.dob}}</h6>                     
+                        </div>
+                        <div class="col-12">
+                         <h4 class="card-title">Phone:</h4>
+                         <h6 class="card-subtitle mb-2 text-muted">{{employee.phone}}</h6>                     
+                        </div>
+
+                    </div>
+                </div>        
+              </div>
+            </div>
+          </div>  
+        </div>        
+    </div>
+</div>
