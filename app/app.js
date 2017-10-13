@@ -1,5 +1,25 @@
 
-var app = angular.module('myApp', ['ngRoute']);
+var app = angular.module('myApp', ['ngRoute']).factory('beforeUnload', function ($rootScope, $window) {
+    // Events are broadcast outside the Scope Lifecycle
+    
+    $window.onbeforeunload = function (e) {
+        var confirmation = {};
+        var event = $rootScope.$broadcast('onBeforeUnload', confirmation);
+        if (event.defaultPrevented) {
+            return confirmation.message;
+        }
+    };
+    
+    $window.onunload = function () {
+        $rootScope.$broadcast('onUnload');
+    };
+    return {};
+})
+.run(function (beforeUnload) {
+    // Must invoke the service at least once
+});
+
+
 
 app.config(function($routeProvider) {
   $routeProvider
@@ -32,7 +52,8 @@ app.controller('HomeController', ['$scope', function($scope) {
 }]);
 
 
-app.controller('SelectEmployeeController', ['$scope', '$http', 'EmployeesService', function($scope, $http, EmployeesService) {
+app.controller('SelectEmployeeController', ['$scope', '$http', 'EmployeesService', '$location' , function($scope, $http, EmployeesService, $location) {
+  
   
  $scope.selecteds = EmployeesService.List;
  $scope.showEmployees = function(name = ""){
@@ -52,12 +73,35 @@ app.controller('SelectEmployeeController', ['$scope', '$http', 'EmployeesService
  $scope.remove = function(employee){
     EmployeesService.remove(employee);
  };
- 
+
 }]);
 
 app.controller('NewTimeSheetController', ['$scope', 'EmployeesService', 'UtilitiesService', function($scope, EmployeesService, UtilitiesService) {    
     $scope.selecteds = EmployeesService.List;
     $scope.WeekDays = UtilitiesService.WeekDays;
+    $scope.Sunday = UtilitiesService.WeekDays[0];
+    $scope.getEndHours = function(startHour){        
+        return UtilitiesService.SelectHours(startHour);
+    };        
+    $scope.duration = function(startHour, endHour){ 
+      return UtilitiesService.calculateHours(startHour, endHour);      
+    };
+    
+    $scope.containsObject = function(obj, list, property = "id"){
+        return UtilitiesService.containsObject(obj, list, property)
+    };
+    $scope.Duration = "00:00"        ;
+    $scope.calculateTotal = function(day){
+        $scope.WeekDays[day.Number].duration = day.duration;
+        var totalMin = 0; 
+        angular.forEach( $scope.WeekDays, function(key, val) {            
+            if (key.duration !== null) {
+                totalMin += UtilitiesService.hourToMinutes(key.duration);
+            }
+        });
+        $scope.Duration = UtilitiesService.minutesToHour(totalMin);
+        console.log($scope.WeekDays);
+    };
 }]);
 
 
@@ -75,10 +119,10 @@ app.service('EmployeesService', function() {
     this.List.splice(itemIndex, 1);          
   };
   
-   this.containsObject = function(obj, list) {
+   this.containsObject = function(obj, list, property = "id") {
     var i;
     for (i = 0; i < list.length; i++) {
-        if (list[i].id === obj.id) {
+        if (list[i][property] === obj[property]) {
             return true;
         }
     }
@@ -121,7 +165,7 @@ app.service('UtilitiesService', function(){
            return D(totalMins%(24*60)/60 | 0) + ':' + D(totalMins%60);  
       };
 
-    this.hourToMinutes = function(hour){
+    this.hourToMinutes = function(hour = '00:00'){
         var piece = hour.split(':');
          var mins = piece[0]*60 + +piece[1];
          return mins;
@@ -134,11 +178,23 @@ app.service('UtilitiesService', function(){
          return D(minutes/60 | 0) + ':' + D(minutes%60);  
     };
     
-    this.SelectHours = function(){
+    this.SelectHours = function(start = '00:00'){
             var optionsHour = [];
+        if (start === '00:00') {
             for (var hour = 0; hour <= (24*60)-15; hour += 15) {        
-                optionsHour.push(this.addMinutes('00:00', hour));               
-            }                                          
+                optionsHour.push(this.addMinutes(start, hour));               
+            }                                                      
+        }else {
+            hour = 0;
+            while (hour <= (24*60)-15) {                
+                optionsHour.push(this.addMinutes(start, hour));               
+                hour += 15;
+                if (this.addMinutes(start, hour) === "00:00") {
+                    break;
+                }    
+            }            
+        }
+            
             return optionsHour;            
     };
     
@@ -147,43 +203,57 @@ app.service('UtilitiesService', function(){
            "Number" : 0,
            "Description" : "Sunday",
            "OptionHoursStart" : this.SelectHours(),
-           "OptionHoursEnd" : []
+           "OptionHoursEnd" : [],
+           "startSelected" : false,
+           "duration" : null
         },
         {
            "Number" : 1,
            "Description" : "Monday",
            "OptionHoursStart" : this.SelectHours(),
-           "OptionHoursEnd" : []
+           "OptionHoursEnd" : [],
+           "startSelected" : false,
+           "duration" : null
         },
         {
            "Number" : 2,
            "Description" : "Tuesday",
            "OptionHoursStart" : this.SelectHours(),
-           "OptionHoursEnd" : []
+           "OptionHoursEnd" : [],
+           "startSelected" : false,
+           "duration" : null
         },
         {
            "Number" : 3,
            "Description" : "Wednesday",
            "OptionHoursStart" : this.SelectHours(),
-           "OptionHoursEnd" : []
+           "OptionHoursEnd" : [],
+           "startSelected" : false,
+           "duration" : null
         },
         {
            "Number" : 4,
            "Description" : "Thursday",
            "OptionHoursStart" : this.SelectHours(),
-           "OptionHoursEnd" : []
+           "OptionHoursEnd" : [],
+           "startSelected" : false,
+           "duration" : null
         },
         {
            "Number" : 5,
            "Description" : "Friday",
            "OptionHoursStart" : this.SelectHours(),
-           "OptionHoursEnd" : []
+           "OptionHoursEnd" : [],
+           "startSelected" : false,
+           "duration" : null
         },
         {
            "Number" : 6,
            "Description" : "Saturday",
            "OptionHoursStart" : this.SelectHours(),
-           "OptionHoursEnd" : []
+           "OptionHoursEnd" : [],
+           "startSelected" : false,
+           "duration" : null
         }
     ];
     
