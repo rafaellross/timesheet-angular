@@ -21,7 +21,12 @@ app.config(function($routeProvider) {
 
   .when('/manage', {
     templateUrl : 'pages/manage.html',
-    controller  : 'AboutController'
+    controller  : 'ManageController'
+  })
+
+  .when('/save', {
+    templateUrl : 'pages/save.html',
+    controller  : 'SaveController'
   })
 
   .otherwise({redirectTo: '/'});

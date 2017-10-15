@@ -108,3 +108,25 @@ angular.module('myApp').controller('NewTimeSheetController', ['$scope', 'Employe
         //console.log($scope.WeekDays);
     };
 }]);
+
+
+angular.module('myApp').controller('ManageController', ['$scope', '$mdToast', function($scope, $mdToast) {
+    $scope.showSimpleToast = function(Message="no message!") {
+      var pinTo = "bottom center";
+
+      $mdToast.show(
+        $mdToast.simple()
+          .textContent(Message)
+          .position(pinTo )
+          .hideDelay(3000)
+      );
+    };
+     $scope.showSimpleToast("Timesheets saved with success!");
+}]);
+
+angular.module('myApp').controller('SaveController', ['$scope', '$location', '$timeout', function($scope,$location, $timeout) {
+ $timeout(function() {
+      $location.path('/manage');
+      }, 3000);
+
+}]);

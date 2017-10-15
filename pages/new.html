@@ -1,6 +1,6 @@
- <div class="inset" layout="row" layout-sm="column" layout-align="center" >
+<div class="inset" layout="row" layout-sm="column" layout-align="center" >
     <md-button flex="90" class="md-accent md-raised" ng-href="#/select">Back</md-button>    
-  </div>
+</div>
 <div ng-cloak>
   <md-content>
     <md-tabs md-dynamic-height md-border-bottom>
@@ -99,15 +99,18 @@
                 </md-list>          
         </md-content>
       </md-tab>
-          
+        <md-toolbar class="md-primary">
+          <div class="md-toolbar-tools">
+            <h2 class="md-flex">Total Hours: {{Duration}}</h2>
+          </div>
+        </md-toolbar>          
     </md-tabs>
-    <md-toolbar class="md-primary">
-      <div class="md-toolbar-tools">
-        <h2 class="md-flex">Hours: {{Duration}}</h2>
-      </div>
-    </md-toolbar>
       
   </md-content>
+</div>
+
+<div class="inset" layout="row" layout-sm="column" layout-align="center" >
+    <md-button flex="90" class="md-accent md-raised" ng-href="#/save">Save</md-button>    
 </div>
 
 
