@@ -3,9 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/timesheet-angular/pages/select-employee.html</file>
+            <file>file:/C:/xampp/htdocs/timesheet-angular/index.html</file>
+            <file>file:/C:/xampp/htdocs/timesheet-angular/app/services.js</file>
             <file>file:/C:/xampp/htdocs/timesheet-angular/app/app.js</file>
+            <file>file:/C:/xampp/htdocs/timesheet-angular/backend/list-employees.php</file>
             <file>file:/C:/xampp/htdocs/timesheet-angular/pages/new.html</file>
+            <file>file:/C:/xampp/htdocs/timesheet-angular/app/controllers.js</file>
         </group>
     </open-files>
 </project-private>

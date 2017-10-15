@@ -124,9 +124,14 @@ angular.module('myApp').controller('ManageController', ['$scope', '$mdToast', fu
      $scope.showSimpleToast("Timesheets saved with success!");
 }]);
 
-angular.module('myApp').controller('SaveController', ['$scope', '$location', '$timeout', function($scope,$location, $timeout) {
- $timeout(function() {
-      $location.path('/manage');
-      }, 3000);
+angular.module('myApp').controller('SaveController', ['$scope', 'EmployeesService','$location', '$timeout', function($scope, EmployeesService, $location, $timeout) {
+    $timeout(function() {
+        $location.path('/manage');
+    }, 3000);
+          
+    $scope.timesheet = EmployeesService.TimeSheet;
+    $scope.timesheet.Employees = EmployeesService.List;
+    $scope.save = function(){
 
+    };
 }]);

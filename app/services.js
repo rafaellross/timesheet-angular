@@ -21,7 +21,7 @@ angular.module('myApp').service('EmployeesService', function() {
     }
         return false;
     };    
-    this.findObjIndex = function(arr, property, value){
+   this.findObjIndex = function(arr, property, value){
         var result = -1;
         
         angular.forEach( arr, function(key, val) {
@@ -30,7 +30,8 @@ angular.module('myApp').service('EmployeesService', function() {
             }            
         });
         return result;
-    };       
+    };     
+    
 });
 
 angular.module('myApp').service('UtilitiesService', function(){
