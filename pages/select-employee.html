@@ -1,106 +1,47 @@
-<div class="row">
-    <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-            <a class="btn btn-primary btn-lg " href="#/">Back</a>							
-    </div> 
-    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-    <form action="#">
-      <div class="form-row">
-        <div class="col-auto">
-            <input type="text" class="form-control form-control-lg" placeholder="Search..." ng-model="search">      
-        </div>
-         <div class="col-auto">
-             <button type="button" class="btn btn-primary btn-lg" ng-click="showEmployees(search)">Search</button>
-        </div> 
-         <div class="col-auto">
-             <button type="button" class="btn btn-dark btn-lg" ng-click="showEmployees()">Show All</button>
-        </div> 
-        <div class="col-auto">
-            <a class="btn btn-primary btn-lg" ng-href="#new" ng-class="{disabled: selecteds.length === 0}">Next</a>
-        </div>          
-      </div>
-    </form>    
-    </div>		   
+ <div class="inset" layout="row" layout-sm="column" layout-align="center" >
+    <md-button flex="90" class="md-accent md-raised" ng-href="#/">Back</md-button>    
+  </div>
+<div class="inset" layout="row" layout-sm="column" layout-align="center" >    
+    <md-input-container flex="90" class="md-block">
+      <label>Search</label>
+      <input ng-model="search">
+    </md-input-container>    
 </div>
-<div class="dropdown-divider"></div>
-<div class="row">
-    <div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">        
-        <div id="accordion" role="tablist">
-          <div class="card" ng-repeat="employee in employees">
-            <div class="card-header">
-              <h5 class="mb-0">
-                  <a ng-click="employee.show = !employee.show" style="cursor: pointer;">
-                  {{employee.name}}
-                </a>
-                  <button type="button" class="btn-primary btn float-right" ng-click="select(employee)">Add</button>
-              </h5>
-            </div>
-              <div id="collapseOne" class="collapse" ng-class="{show: employee.show}">
-              <div class="card-body">
-                <div class="row">
-                    <div class="col-5">
-                        <img ng-src="{{employee.image}}" class="rounded float-left img-fluid" style="width: 200px;"/>
-                    </div>
-                    <div class="col-7">
-                        <div class="col-12">
-                         <h4 class="card-title">Name</h4>
-                         <h6 class="card-subtitle mb-2 text-muted">{{employee.name}}</h6>                     
-                        </div>
-                        <div class="col-12">
-                         <h4 class="card-title">DOB</h4>
-                         <h6 class="card-subtitle mb-2 text-muted">{{employee.dob}}</h6>                     
-                        </div>
-                        <div class="col-12">
-                         <h4 class="card-title">Phone:</h4>
-                         <h6 class="card-subtitle mb-2 text-muted">{{employee.phone}}</h6>                     
-                        </div>
-
-                    </div>
-                </div>        
-              </div>
-            </div>
-          </div>  
-        </div>        
-    </div>
+<div class="inset" layout="row" layout-sm="column" layout-align="center">
+    <md-button flex="90" class="md-raised" ng-click="showEmployees(search)">Search</md-button>    
+</div>
+<div class="inset" layout="row" layout-sm="column" layout-align="center">
+    <md-button flex="90" class="md-primary md-raised" ng-click="showEmployees()">Show All</md-button>    
+</div>
+<div class="inset" layout="row" layout-sm="column" layout-align="center">
+    <md-button flex="90" class="md-accent md-raised" ng-href="#new" ng-disabled="selecteds.length === 0">Next</md-button>    
 </div>
 
-<div class="dropdown-divider"></div>
-<div class="row">
-<div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">        
-        <div id="accordion" role="tablist">
-          <div class="card" ng-repeat="employee in selecteds">
-            <div class="card-header">
-              <h5 class="mb-0">
-                  <a ng-click="employee.show = !employee.show" style="cursor: pointer;">
-                  {{employee.name }}
-                </a>
-                  <button type="button" class="btn-danger btn float-right" ng-click="remove(employee)">Remove</button>
-              </h5>
-            </div>
-              <div id="collapseOne" class="collapse" ng-class="{show: employee.show}">
-              <div class="card-body">
-                <div class="row">
-                    <div class="col-5">
-                        <img ng-src="{{employee.image}}" class="rounded float-left img-fluid" style="width: 200px;"/>
-                    </div>
-                    <div class="col-7">
-                        <div class="col-12">
-                         <h4 class="card-title">Name</h4>
-                         <h6 class="card-subtitle mb-2 text-muted">{{employee.name}}</h6>                     
-                        </div>
-                        <div class="col-12">
-                         <h4 class="card-title">DOB</h4>
-                         <h6 class="card-subtitle mb-2 text-muted">{{employee.dob}}</h6>                     
-                        </div>
-                        <div class="col-12">
-                         <h4 class="card-title">Phone:</h4>
-                         <h6 class="card-subtitle mb-2 text-muted">{{employee.phone}}</h6>                     
-                        </div>
+<md-list flex>
 
-                    </div>
-                </div>        
-              </div>
-            </div>
-          </div>  
-        </div>        
-    </div>
-</div>
+        <md-list-item class="md-3-line" ng-repeat="employee in employees" ng-click="showAddRemove(employee, 'Add')">
+          <img ng-src="{{employee.image}}" class="md-avatar" alt="{{employee.name}}" />
+          <div class="md-list-item-text" layout="column">
+            <h3>{{ employee.name }}</h3>
+            <h4>{{ item.what }}</h4>
+            <p>{{ item.notes }}</p>
+          </div>
+        </md-list-item>
+        <md-divider ></md-divider>
+
+</md-list>
+
+<md-list flex>
+        <md-subheader class="md-no-sticky">Selecteds ({{selecteds.length}})</md-subheader>    
+        <md-list-item class="md-3-line" ng-repeat="employee in selecteds" ng-click="showAddRemove(employee, 'Remove')" style="background: #b9f6ca;">
+          <img ng-src="{{employee.image}}" class="md-avatar" alt="{{employee.name}}" />
+          <div class="md-list-item-text" layout="column">
+            <h3>{{ employee.name }}</h3>
+            <h4>{{ item.what }}</h4>
+            <p>{{ item.notes }}</p>
+          </div>
+        </md-list-item>
+        <md-divider ></md-divider>
+
+</md-list>
+

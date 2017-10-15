@@ -4,7 +4,7 @@
 require_once(dirname(__FILE__) . '/conf/config.php');
 
 
-$con = @mysqli_connect('localhost', 'root', '', 'timesheet');
+$con = @mysqli_connect('localhost', 'root', 'root', 'timesheet');
 
 if (!$con) {
     echo "Error: " . mysqli_connect_error();
@@ -34,7 +34,14 @@ $resul = array();
 
 while ($row = mysqli_fetch_array($query))
 {
-    $image = 'data:image/jpeg;base64,' . base64_encode( $row['image'] );
+    if (is_null($row['image'])) {
+        $image = 'http://via.placeholder.com/200?text=No%20Image';
+    }else{
+        $image = 'data:image/jpeg;base64,' . base64_encode( $row['image'] );
+    }
+    
+    
+    
     
     $myOjb = new Employee($row['id'], $row['codemp'], $row['name'], $row['dob'], $row['phone'], $image);
     array_push($resul, $myOjb);	    

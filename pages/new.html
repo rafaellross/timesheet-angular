@@ -1,111 +1,114 @@
-<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-        <a class="btn btn-primary btn-lg " ng-href="#select">Back</a>							
-</div> 
-<div class="dropdown-divider"></div>
-<div class="row">
-<div class="col-xs-12 col-sm-12 col-lg-12 col-md-12">        
-    
-        <div id="accordion" role="tablist">
-          <div class="card">
-            <div class="card-header">
-              <h5 class="mb-0">
-                  <a ng-click="show = !show" style="cursor: pointer;">
-                      <span>Selected Employees ({{selecteds.length}})</span>
-                </a>
-                  
-              </h5>
-            </div>
-              <div id="collapseOne" class="collapse" ng-class="{show: show}">
-              <div class="card-body">
-                <div class="row">
-                    <div role="tablist" id="employees">
-                      <div class="card" ng-repeat="employee in selecteds">
-                        <div class="card-header">
-                          <h5 class="mb-0">
-                              <a ng-click="employee.show = !employee.show" style="cursor: pointer;">
-                              {{employee.name }}
-                            </a>
-                              
-                          </h5>
-                        </div>
-                          <div id="collapseOne" class="collapse" ng-class="{show: employee.show}">
-                          <div class="card-body">
-                            <div class="row">
-                                <div class="col-5">
-                                    <img ng-src="{{employee.image}}" class="rounded float-left img-fluid" style="width: 200px;"/>
-                                </div>
-                                <div class="col-7">
-                                    <div class="col-12">
-                                     <h4 class="card-title">Name</h4>
-                                     <h6 class="card-subtitle mb-2 text-muted">{{employee.name}}</h6>                     
-                                    </div>
-                                    <div class="col-12">
-                                     <h4 class="card-title">DOB</h4>
-                                     <h6 class="card-subtitle mb-2 text-muted">{{employee.dob}}</h6>                     
-                                    </div>
-                                    <div class="col-12">
-                                     <h4 class="card-title">Phone:</h4>
-                                     <h6 class="card-subtitle mb-2 text-muted">{{employee.phone}}</h6>                     
-                                    </div>
-
-                                </div>
-                            </div>        
+ <div class="inset" layout="row" layout-sm="column" layout-align="center" >
+    <md-button flex="90" class="md-accent md-raised" ng-href="#/select">Back</md-button>    
+  </div>
+<div ng-cloak>
+  <md-content>
+    <md-tabs md-dynamic-height md-border-bottom>
+      <md-tab label="Time Sheet">
+        <md-content class="md-padding">
+          
+          <!-- Content comes here -->
+            <md-card ng-if="weekday.Number !== 0" ng-repeat="weekday in WeekDays">
+                <md-card-title>
+                  <md-card-title-text>
+                    <span class="md-headline">{{weekday.Description}}</span>                    
+                  </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                  <div layout="row">
+                    <md-input-container  flex="90">
+                      <label>Start</label>
+                      <md-select ng-model="startSelected" ng-change="weekday.startSelected = true">                      
+                        <md-option ng-repeat="hour in weekday.OptionHoursStart" value="{{hour}}">
+                          {{hour}}
+                        </md-option>
+                      </md-select>
+                    </md-input-container>     
+                  </div>
+                    <div layout="row">
+                    <md-input-container  flex="90">
+                      <label>End</label>
+                      <md-select ng-model="endSelected" ng-disabled="!weekday.startSelected" ng-change="weekday.duration = duration(startSelected, endSelected); calculateTotal(weekday);" flex="50">                      
+                        <md-option ng-if="weekday.startSelected" value="{{hour}}" ng-repeat="hour in getEndHours(startSelected)">
+                          {{hour}}
+                        </md-option>
+                      </md-select>
+                    </md-input-container>
+                      
+                  </div>
+                </md-card-content>
+                    <md-card-actions layout="row" layout-align="end center">                        
+                        <md-toolbar class="md-warn">
+                          <div class="md-toolbar-tools">
+                            <h2 class="md-flex">Hours: {{weekday.duration}}</h2>
                           </div>
-                        </div>
-                      </div>  
-                    </div>   
-                </div>        
-              </div>
-            </div>
-          </div>  
-        </div>        
-    </div>
+                        </md-toolbar>
+                    </md-card-actions>                                 
+              </md-card>          
+          <!-- Starts Sunday -->
+            <md-card>
+                <md-card-title>
+                  <md-card-title-text>
+                    <span class="md-headline">{{Sunday.Description}}</span>                    
+                  </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                  <div layout="row">
+                    <md-input-container  flex="90">
+                      <label>Start</label>
+                      <md-select ng-model="startSelectedSunday" ng-change="Sunday.startSelected = true">                      
+                        <md-option ng-repeat="hour in Sunday.OptionHoursStart" value="{{hour}}">
+                          {{hour}}
+                        </md-option>
+                      </md-select>
+                    </md-input-container>     
+                  </div>
+                    <div layout="row">
+                    <md-input-container  flex="90">
+                      <label>End</label>
+                      <md-select ng-model="endSelectedSunday" ng-disabled="!Sunday.startSelected" ng-change="Sunday.duration = duration(startSelectedSunday, endSelectedSunday); calculateTotal(Sunday);" flex="50">                      
+                        <md-option ng-if="Sunday.startSelected" value="{{hour}}" ng-repeat="hour in getEndHours(startSelectedSunday)">
+                          {{hour}}
+                        </md-option>
+                      </md-select>
+                    </md-input-container>
+                      
+                  </div>
+                </md-card-content>
+                    <md-card-actions layout="row" layout-align="end center">                        
+                        <md-toolbar class="md-warn">
+                          <div class="md-toolbar-tools">
+                            <h2 class="md-flex">Hours: {{Sunday .duration}}</h2>
+                          </div>
+                        </md-toolbar>
+                    </md-card-actions>                                 
+              </md-card>                              
+        </md-content>
+      <md-tab label="Selecteds ({{selecteds.length}})">
+        <md-content class="md-padding">          
+                <md-list flex>                        
+                        <md-list-item class="md-3-line" ng-repeat="employee in selecteds" ng-click="showAddRemove(employee, 'Remove')" style="background: #b9f6ca;">
+                          <img ng-src="{{employee.image}}" class="md-avatar" alt="{{employee.name}}" />
+                          <div class="md-list-item-text" layout="column">
+                            <h3>{{ employee.name }}</h3>
+                            <h4>{{ item.what }}</h4>
+                            <p>{{ item.notes }}</p>
+                          </div>
+                        </md-list-item>
+                        <md-divider ></md-divider>
+                </md-list>          
+        </md-content>
+      </md-tab>
+          
+    </md-tabs>
+    <md-toolbar class="md-primary">
+      <div class="md-toolbar-tools">
+        <h2 class="md-flex">Hours: {{Duration}}</h2>
+      </div>
+    </md-toolbar>
+      
+  </md-content>
 </div>
 
-<table class="table table-responsive" id="table-form">
-    <thead>
-      <tr>
-        <th>Day</th>
-        <th>Start</th>
-        <th>End</th>
-        <th>Duration</th>
-      </tr>
-    </thead>
-    <tbody>
-    <tr ng-if="weekday.Number !== 0" ng-repeat="weekday in WeekDays">
-        <th>{{weekday.Description}}</th>
-        <td>
-            <select ng-model="startSelected" class="hour-start form-control custom-select " ng-change="weekday.startSelected = true" ng-options="hour for hour in weekday.OptionHoursStart">
-                
-            </select>
-        </td>
-        <td>
-            <select ng-model="endSelected" class="hour-end form-control custom-select " ng-disabled="!weekday.startSelected" ng-change="weekday.duration = duration(startSelected, endSelected); calculateTotal(weekday);" >
-                <option ng-if="weekday.startSelected" value="{{hour}}" ng-repeat="hour in getEndHours(startSelected)">{{hour}}</option>
-            </select>
-        </td>
-        <td class="duration">{{weekday.duration}}</td>
-    </tr>
-    <tr>
-        <th>{{Sunday.Description}}</th>
-        <td>
-            <select ng-model="startSelectedSunday" ng-change="Sunday.startSelected = true" class="hour-start form-control custom-select " ng-options="hour for hour in Sunday.OptionHoursStart" >
-                
-            </select>
-        </td>
-        <td>
-            <select ng-model="endSelectedSunday" class="hour-end form-control custom-select " ng-disabled="!Sunday.startSelected" ng-change="Sunday.duration = duration(startSelectedSunday, endSelectedSunday);  calculateTotal(Sunday);" >
-                <option ng-if="Sunday.startSelected" value="{{hour}}" ng-repeat="hour in getEndHours(startSelectedSunday)">{{hour}}</option>
-            </select>
-        </td>
-        <td class="duration">{{Sunday.duration}}</td>
-    </tr>    
-    </tbody>
-    <tfoot>
-        <tr>
-            <th colspan="3">Total worked hours of the week</th>
-            <td class="ts-total">{{Duration}}</td>
-        </tr>
-    </tfoot>
-</table>
+
 					
